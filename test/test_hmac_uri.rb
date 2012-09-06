@@ -17,6 +17,10 @@ describe 'HMAC::URI' do
     assert HMAC::URI.new(OPTIONS).signed? signed_url
   end
 
+  it 'should fail on secret mismatch' do
+    assert !HMAC::URI.new(secret: 'foo').signed?(signed_url), 'secret mismatch should fail check'
+  end
+
   it 'should fail on invalid nonce' do
     url = signed_url.to_s.sub %r{nonce=\d+}, 'nonce=123'
     assert !HMAC::URI.new(OPTIONS).signed?(url), 'invalid nonce should fail check'

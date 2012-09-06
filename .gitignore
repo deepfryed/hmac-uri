@@ -1,3 +1,6 @@
 *.gem
 tmp/
 pkg/
+.bundle/
+gems/
+bin/
