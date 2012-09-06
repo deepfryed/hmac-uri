@@ -1,0 +1,1 @@
+require 'hmac/uri'
