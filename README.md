@@ -29,6 +29,7 @@ uri   = mac.sign "http://example.org/resource?id=1"
 
 mac.signed?(uri)           #=> true
 mac.signed?(uri, delta: 0) #=> false
+```
 
 ## License
 
