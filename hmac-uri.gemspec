@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = "hmac-uri"
-  s.version = "0.1.0"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Bharanee Rathna"]
-  s.date = "2012-09-06"
+  s.date = "2012-11-11"
   s.description = "OpenSSL based HMAC signing for request urls with shared secret"
   s.email = ["deepfryed@gmail.com"]
   s.files = ["test/helper.rb", "test/test_hmac_uri.rb", "lib/hmac-uri.rb", "lib/hmac/uri.rb", "README.md", "CHANGELOG"]

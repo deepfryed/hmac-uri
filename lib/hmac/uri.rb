@@ -5,21 +5,46 @@ require 'addressable/uri'
 
 module HMAC
   class URI
+    module QSParser
+      def query_values
+        query.to_s.split(/&/).each_with_object({}) do |pair, hash|
+          key, value = pair.split(/=/, 2).map {|s| Addressable::URI.unescape(s)}
+          hash[key]  = hash.key?(key) ? [hash[key], value].flatten : value
+        end
+      end
+
+      def query_values= hash
+        self.query = flatten_query_values(hash).map {|pair| pair.map {|s| Addressable::URI.escape(s.to_s)}.join('=')}.join('&')
+      end
+
+      def flatten_query_values hash
+        hash.keys.sort.each_with_object([]) do |key, q|
+          [hash[key]].flatten.each do |value|
+            q << [key, value]
+          end
+        end
+      end
+    end # QSParser
+
     def initialize options = {}
       @secret    = options.fetch(:secret)
       @validator = options.fetch(:validator, method(:default_validator))
       @digest    = OpenSSL::Digest::Digest.new('sha1')
     end
 
+    def parse uri
+      Addressable::URI.parse(uri).tap {|u| u.extend(QSParser)}
+    end
+
     def sign uri
-      uri = merge_query(Addressable::URI.parse(timestamp(uri)), nonce: nonce)
+      uri = merge_query(parse(timestamp(uri)), nonce: nonce)
       merge_query(uri, signature: signature(uri))
     end
 
     def signed? uri, options = {}
       delta = options.fetch(:delta, 300).to_i
-      uri   = Addressable::URI.parse(uri)
-      query = uri.query_values || {}
+      uri   = parse(uri)
+      query = uri.query_values
       ts    = query['timestamp'].to_i
       nonce = query['nonce']
       hmac  = query.delete('signature')
@@ -57,7 +82,7 @@ module HMAC
     end
 
     def timestamp uri
-      merge_query(Addressable::URI.parse(uri), timestamp: Time.now.utc.to_i)
+      merge_query(parse(uri), timestamp: Time.now.utc.to_i)
     end
 
     def signature message

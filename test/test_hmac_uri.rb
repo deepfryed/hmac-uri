@@ -2,8 +2,8 @@ require 'helper'
 
 describe 'HMAC::URI' do
   OPTIONS       = {secret: 'foobar'}
-  EXAMPLE_URL   = 'http://example.com'
-  SIGNED_URI_RE = %r{http://example.com\?nonce=\d+&signature=.+&timestamp=\d+}
+  EXAMPLE_URL   = 'http://example.com/?foo=1&foo=2'
+  SIGNED_URI_RE = %r{http://example.com/\?foo=1&foo=2&nonce=\d+&signature=.+&timestamp=\d+}
 
   def signed_url
     HMAC::URI.new(OPTIONS).sign(EXAMPLE_URL)
