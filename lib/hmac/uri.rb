@@ -1,3 +1,4 @@
+require 'cgi'
 require 'openssl'
 require 'addressable/uri'
 
@@ -8,13 +9,13 @@ module HMAC
     module QSParser
       def query_values
         query.to_s.split(/&/).each_with_object({}) do |pair, hash|
-          key, value = pair.split(/=/, 2).map {|s| Addressable::URI.unescape(s)}
+          key, value = pair.split(/=/, 2).map {|s| CGI.unescape(s)}
           hash[key]  = hash.key?(key) ? [hash[key], value].flatten : value
         end
       end
 
       def query_values= hash
-        self.query = flatten_query_values(hash).map {|pair| pair.map {|s| Addressable::URI.escape(s.to_s)}.join('=')}.join('&')
+        self.query = flatten_query_values(hash).map {|pair| pair.map {|s| CGI.escape(s.to_s)}.join('=')}.join('&')
       end
 
       def flatten_query_values hash
