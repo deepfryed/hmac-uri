@@ -33,4 +33,4 @@ mac.signed?(uri, delta: 0) #=> false
 
 ## License
 
-BSD
+MIT
