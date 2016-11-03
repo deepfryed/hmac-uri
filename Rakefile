@@ -5,9 +5,13 @@ require 'rake/clean'
 require 'rake/testtask'
 
 $rootdir = Pathname.new(__FILE__).dirname
+
+$:.unshift $rootdir + 'lib'
+require 'hmac/uri'
+
 $gemspec = Gem::Specification.new do |s|
   s.name              = 'hmac-uri'
-  s.version           = '1.0.0'
+  s.version           = HMAC::URI::VERSION
   s.date              = Date.today
   s.authors           = ['Bharanee Rathna']
   s.email             = ['deepfryed@gmail.com']
@@ -19,6 +23,7 @@ $gemspec = Gem::Specification.new do |s|
 
   s.add_dependency('addressable')
   s.add_development_dependency('rake')
+  s.required_ruby_version = '>= 2.1'
 end
 
 desc 'Generate gemspec'

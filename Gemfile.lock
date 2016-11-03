@@ -1,12 +1,21 @@
-GEM
-  remote: http://rubygems.org/
+PATH
+  remote: .
   specs:
-    addressable (2.3.2)
+    hmac-uri (2.0.0)
+      addressable
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    addressable (2.4.0)
     rake (0.9.2.2)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  addressable
+  hmac-uri!
   rake
+
+BUNDLED WITH
+   1.12.5

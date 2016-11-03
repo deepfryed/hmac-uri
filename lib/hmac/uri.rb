@@ -6,6 +6,9 @@ require 'addressable/uri'
 
 module HMAC
   class URI
+
+    VERSION = '2.0.0'
+
     module QSParser
       def query_values
         query.to_s.split(/&/).each_with_object({}) do |pair, hash|
@@ -30,7 +33,7 @@ module HMAC
     def initialize options = {}
       @secret    = options.fetch(:secret)
       @validator = options.fetch(:validator, method(:default_validator))
-      @digest    = OpenSSL::Digest::Digest.new('sha1')
+      @digest    = OpenSSL::Digest::SHA256.new
     end
 
     def parse uri
